@@ -11,11 +11,11 @@
 python3 cleaning_data.py -fn '2022-11-04.txt'
 
 """
-import findspark
+#import findspark
 
-findspark.init()
+#findspark.init()
 
-from loguru import logger
+#from loguru import logger
 #import argparse
 from argparse import ArgumentParser
 import sys
@@ -51,15 +51,15 @@ def get_spark():
 
 def transform_data(input_path,output_path):
 
-    logger.info("Spark session has been estableshed")
+#    logger.info("Spark session has been estableshed")
 
-    findspark.init()
-    logger.info("Spark init - done")
+#    findspark.init()
+#    logger.info("Spark init - done")
 
     spark = get_spark()
-    logger.info("Spark session has been estableshed")
+#    logger.info("Spark session has been estableshed")
     
-    logger.info("check_existing_new_data")
+#    logger.info("check_existing_new_data")
     
     try:
         df_exists = spark.read.parquet(output_path)
@@ -74,14 +74,14 @@ def transform_data(input_path,output_path):
     
     except Exception:
         
-        logger.info("There is no data")  
+#        logger.info("There is no data")  
         ex_partitions = []
         
         
-    logger.info(f"Existing partitions: {ex_partitions}")    
+#    logger.info(f"Existing partitions: {ex_partitions}")    
         
         
-    logger.info(f"read data from : {input_path}")      
+#    logger.info(f"read data from : {input_path}")      
 
     sdf = spark.read.text(input_path)
 
@@ -105,10 +105,10 @@ def transform_data(input_path,output_path):
                )
     
     if sdf_split.count()==0:
-        logger.info("There is no new partitions")
+#        logger.info("There is no new partitions")
         sys.exit()
-    else:
-        logger.info("There is new partitions. Start cleaning")
+#    else:
+#        logger.info("There is new partitions. Start cleaning")
         
     
     
@@ -184,8 +184,8 @@ def transform_data(input_path,output_path):
      .save(output_path)
     )
 
-    logger.info(f"data has been saved to : {output_path} succesfully")
-    logger.info("job is done")
+#    logger.info(f"data has been saved to : {output_path} succesfully")
+#    logger.info("job is done")
     
     
 def main():

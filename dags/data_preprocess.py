@@ -97,7 +97,7 @@ setup_airflow_connections(YC_S3_CONNECTION, YC_SA_CONNECTION)
 with DAG(
     dag_id="data_preprocess",
     start_date=datetime(year=2024, month=1, day=20),
-    schedule_interval=timedelta(minutes=30),
+    schedule_interval=timedelta(minutes=60*24),
     catchup=False,
 ) as ingest_dag:
     # 1 этап: создание Dataproc клаcтера
@@ -130,7 +130,7 @@ with DAG(
     # 2 этап: запуск задания PySpark
     poke_spark_processing = DataprocCreatePysparkJobOperator(
         task_id="dp-cluster-pyspark-task",
-        main_python_file_uri=f"s3a://{S3_SOURCE_BUCKET}/src/pyspark_script.py",
+        main_python_file_uri=f"s3a://{S3_SOURCE_BUCKET}/src/cleaning_data.py",
         connection_id=YC_SA_CONNECTION.conn_id,
         args=["--bucket", S3_BUCKET_NAME],
         dag=ingest_dag,
